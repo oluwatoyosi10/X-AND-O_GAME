@@ -106,3 +106,62 @@ public class TicTacToe extends JFrame {
 
         return welcome;
     }
+
+private JPanel createGameScreen() {
+        JPanel gamePanel = new JPanel(new BorderLayout());
+        gamePanel.setBackground(new Color(240, 240, 240));
+        gamePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Status panel
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBackground(new Color(240, 240, 240));
+        statusLabel = new JLabel();
+        statusLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        updateStatus();
+        statusPanel.add(statusLabel);
+        gamePanel.add(statusPanel, BorderLayout.NORTH);
+
+        // Game board
+        JPanel boardPanel = new JPanel(new GridLayout(3, 3, 10, 10));
+        boardPanel.setBackground(new Color(240, 240, 240));
+        boardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 60);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                JButton btn = new JButton("");
+                btn.setFont(btnFont);
+                btn.setFocusPainted(false);
+                btn.setBackground(Color.WHITE);
+                btn.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2));
+                btn.setPreferredSize(new Dimension(100, 100));
+                btn.setForeground(i == j ? new Color(70, 130, 180) : new Color(220, 100, 100));
+
+                final int row = i, col = j;
+                btn.addActionListener(e -> handleMove(btn, row, col));
+                buttons[i][j] = btn;
+                boardPanel.add(btn);
+            }
+        }
+
+        gamePanel.add(boardPanel, BorderLayout.CENTER);
+
+        // Control panel
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBackground(new Color(240, 240, 240));
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+
+        JButton restartBtn = createStyledButton("RESTART", new Color(70, 130, 180));
+        restartBtn.addActionListener(e -> resetGame());
+
+        JButton menuBtn = createStyledButton("MAIN MENU", new Color(100, 100, 100));
+        menuBtn.addActionListener(e -> cardLayout.show(mainPanel, "Welcome"));
+
+        controlPanel.add(restartBtn);
+        controlPanel.add(Box.createHorizontalStrut(20));
+        controlPanel.add(menuBtn);
+
+        gamePanel.add(controlPanel, BorderLayout.SOUTH);
+
+        return gamePanel;
+    }
