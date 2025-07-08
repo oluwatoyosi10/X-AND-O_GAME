@@ -164,4 +164,65 @@ private JPanel createGameScreen() {
         gamePanel.add(controlPanel, BorderLayout.SOUTH);
 
         return gamePanel;
+    private JButton createStyledButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(bgColor.darker());
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(bgColor);
+            }
+        });
+
+        return button;
+    }
+
+    private void handleMove(JButton btn, int row, int col) {
+        if (!btn.getText().isEmpty()) return;
+
+        btn.setText(xTurn ? "X" : "O");
+        moves++;
+
+        if (checkWinner()) {
+            String winner = xTurn ? player1Name : player2Name;
+            showGameOverDialog(winner + " wins!");
+            resetGame();
+        } else if (moves == 9) {
+            showGameOverDialog("It's a draw!");
+            resetGame();
+        } else {
+            xTurn = !xTurn;
+            updateStatus();
+        }
+    }
+
+    private void showGameOverDialog(String message) {
+        JDialog dialog = new JDialog(this, "Game Over", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(this);
+
+        JLabel label = new JLabel(message, SwingConstants.CENTER);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        dialog.add(label, BorderLayout.CENTER);
+
+        JButton okButton = createStyledButton("OK", new Color(70, 130, 180));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(okButton);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.setVisible(true);
+    }
     }
