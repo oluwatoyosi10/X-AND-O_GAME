@@ -107,7 +107,7 @@ public class TicTacToe extends JFrame {
         return welcome;
     }
 
-private JPanel createGameScreen() {
+    private JPanel createGameScreen() {
         JPanel gamePanel = new JPanel(new BorderLayout());
         gamePanel.setBackground(new Color(240, 240, 240));
         gamePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -224,5 +224,4 @@ private JPanel createGameScreen() {
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         dialog.setVisible(true);
-    }
     }
