@@ -225,3 +225,74 @@ public class TicTacToe extends JFrame {
 
         dialog.setVisible(true);
     }
+
+    private boolean checkWinner() {
+        String symbol = xTurn ? "X" : "O";
+
+        // Check rows and columns
+        for (int i = 0; i < 3; i++) {
+            if (symbol.equals(buttons[i][0].getText()) &&
+                    symbol.equals(buttons[i][1].getText()) &&
+                    symbol.equals(buttons[i][2].getText())) {
+                highlightWinningCells(i, 0, i, 1, i, 2);
+                return true;
+            }
+
+            if (symbol.equals(buttons[0][i].getText()) &&
+                    symbol.equals(buttons[1][i].getText()) &&
+                    symbol.equals(buttons[2][i].getText())) {
+                highlightWinningCells(0, i, 1, i, 2, i);
+                return true;
+            }
+        }
+
+        // Check diagonals
+        if (symbol.equals(buttons[0][0].getText()) &&
+                symbol.equals(buttons[1][1].getText()) &&
+                symbol.equals(buttons[2][2].getText())) {
+            highlightWinningCells(0, 0, 1, 1, 2, 2);
+            return true;
+        }
+
+        if (symbol.equals(buttons[0][2].getText()) &&
+                symbol.equals(buttons[1][1].getText()) &&
+                symbol.equals(buttons[2][0].getText())) {
+            highlightWinningCells(0, 2, 1, 1, 2, 0);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void highlightWinningCells(int r1, int c1, int r2, int c2, int r3, int c3) {
+        Color winColor = new Color(144, 238, 144); // Light green
+        buttons[r1][c1].setBackground(winColor);
+        buttons[r2][c2].setBackground(winColor);
+        buttons[r3][c3].setBackground(winColor);
+    }
+
+    private void updateStatus() {
+        String currentPlayer = xTurn ? player1Name : player2Name;
+        String symbol = xTurn ? "X" : "O";
+        statusLabel.setText(currentPlayer + "'s turn (" + symbol + ")");
+    }
+
+    private void resetGame() {
+        xTurn = true;
+        moves = 0;
+        for (JButton[] row : buttons) {
+            for (JButton btn : row) {
+                btn.setText("");
+                btn.setBackground(Color.WHITE);
+            }
+        }
+        updateStatus();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            TicTacToe game = new TicTacToe();
+            game.setVisible(true);
+        });
+    }
+}
